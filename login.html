@@ -12,7 +12,7 @@
 </head>
 <body class="h-full flex items-center justify-center bg-slate-900 text-slate-100 p-6">
 
-    <div class="w-full max-w-md bg-slate-850 p-8 rounded-2xl border border-slate-800 shadow-2xl space-y-6">
+    <div class="w-full max-w-md bg-slate-800 p-8 rounded-2xl border border-slate-800 shadow-2xl space-y-6">
         
         <!-- Cabeçalho -->
         <div class="text-center space-y-2">
@@ -84,14 +84,6 @@
 
     </div>
 
-    <!-- Script rápido para gerenciar o estado visual do htmx-indicator -->
-    <script>
-        document.addEventListener('htmx:configRequest', (evt) => {
-            document.getElementById('loading-spinner').style.display = 'inline-block';
-        });
-        document.addEventListener('htmx:afterOnLoad', (evt) => {
-            document.getElementById('loading-spinner').style.display = 'none';
-        });
-    </script>
+    <script src="js/login.js"></script>
 </body>
 </html>

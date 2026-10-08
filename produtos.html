@@ -8,12 +8,12 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@1.53.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="h-full flex text-slate-800 overflow-x-hidden">
 
     <!-- Overlay para fechar o menu no mobile -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs hidden lg:hidden transition-opacity"></div>
+    <div id="sidebar-overlay" data-toggle-sidebar class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden lg:hidden transition-opacity"></div>
 
     <!-- Sidebar / Menu Lateral Esquerdo -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-800 text-slate-300 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 lg:static">
@@ -28,7 +28,7 @@
                     <span class="text-[10px] text-slate-400">Entrada e Saída de Produtos</span>
                 </div>
             </a>
-            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white p-1">
+            <button data-toggle-sidebar class="lg:hidden text-slate-400 hover:text-white p-1">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
@@ -91,9 +91,9 @@
     <div class="flex-1 flex flex-col min-w-0">
         
         <!-- Barra Superior (Header) -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 shadow-xs">
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 shadow-sm">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="lg:hidden text-slate-600 hover:text-slate-900 p-1">
+                <button data-toggle-sidebar class="lg:hidden text-slate-600 hover:text-slate-900 p-1">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
                 <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
@@ -103,17 +103,35 @@
                 </div>
             </div>
 
-            <!-- Informações do Usuário Logado -->
-            <div class="flex items-center gap-3">
+        <!-- Informações do Usuário Logado com Menu Dropdown Estilo Google -->
+        <div class="relative" data-user-menu>
+            <!-- Botão do Perfil que ativa o menu -->
+            <button type="button" data-toggle-user-menu class="flex items-center gap-3 focus:outline-none group cursor-pointer">
                 <div class="text-right hidden sm:block">
                     <span class="text-xs text-slate-500 block">Você está logado como <strong class="text-slate-800">admin</strong></span>
                     <span class="text-[11px] text-slate-400">IP: 192.168.56.1</span>
                 </div>
-                <div class="flex items-center justify-center w-9 h-9 bg-slate-200 rounded-full text-slate-700 font-bold border border-slate-300">
+                <div class="flex items-center justify-center w-9 h-9 bg-slate-200 rounded-full text-slate-700 font-bold border border-slate-300 group-hover:border-blue-500 transition-colors">
                     <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
                 </div>
+            </button>
+
+            <!-- Menu Dropdown (Oculto por padrão) -->
+            <div id="userMenuDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div class="px-4 py-2 border-b border-slate-100 sm:hidden">
+                    <span class="text-xs text-slate-500 block">Logado como <strong>admin</strong></span>
+                    <span class="text-[11px] text-slate-400">IP: 192.168.56.1</span>
+                </div>
+
+                <div class="py-1">
+                    <a href="login.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        <span>Sair do Sistema</span>
+                    </a>
+                </div>
             </div>
-        </header>
+        </div>
+    </header>
 
         <!-- Corpo da Página -->
         <main class="flex-1 p-4 sm:p-6 space-y-6 overflow-y-auto">
@@ -125,14 +143,14 @@
                     </div>
                     <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Gerencie os itens cadastrados, preços e estoque atual.</p>
                 </div>
-                <button onclick="openModal('productModal')" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md transition-all text-sm cursor-pointer">
+                <button data-open-modal="productModal" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md transition-all text-sm cursor-pointer">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                     <span>Cadastrar Novo Produto</span>
                 </button>
             </div>
 
             <!-- Tabela de Produtos -->
-            <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[700px]">
                         <thead>
@@ -170,14 +188,14 @@
     </div>
 
     <!-- Modal 1: Cadastrar Novo Produto -->
-    <div id="productModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div id="productModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
             <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
                 <h3 class="font-bold text-base flex items-center gap-2">
                     <i data-lucide="package-plus" class="w-5 h-5 text-blue-400"></i>
                     Cadastrar Novo Produto
                 </h3>
-                <button onclick="closeModal('productModal')" class="text-slate-400 hover:text-white">
+                <button data-close-modal="productModal" class="text-slate-400 hover:text-white">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -192,7 +210,7 @@
                     <!-- Campo Categoria com opção de cadastrar nova -->
                     <div class="space-y-1">
                         <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Categoria</label>
-                        <select id="selectCategoria" onchange="verificarOpcaoCategoria(this)" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                        <select id="selectCategoria" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
                             <option value="">Selecione a categoria...</option>
                             <option value="Eletrônicos">Eletrônicos</option>
                             <option value="Periféricos">Periféricos</option>
@@ -209,7 +227,7 @@
                 <!-- Campo Fornecedor com opção de cadastrar novo -->
                 <div class="space-y-1">
                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Fornecedor</label>
-                    <select id="selectFornecedor" onchange="verificarOpcaoFornecedor(this)" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                    <select id="selectFornecedor" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
                         <option value="">Selecione o fornecedor...</option>
                         <option value="Tech Distribuidora">Tech Distribuidora S/A</option>
                         <option value="Global Imports">Global Imports Ltda</option>
@@ -229,7 +247,7 @@
                 </div>
 
                 <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
-                    <button type="button" onclick="closeModal('productModal')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition-colors cursor-pointer">
+                    <button type="button" data-close-modal="productModal" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition-colors cursor-pointer">
                         Cancelar
                     </button>
                     <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl shadow-md transition-colors cursor-pointer">
@@ -241,14 +259,14 @@
     </div>
 
     <!-- Modal 2: Adicionar Nova Categoria (Rápido) -->
-    <div id="categoriaModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div id="categoriaModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200">
             <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
                 <h3 class="font-bold text-sm flex items-center gap-2">
                     <i data-lucide="tags" class="w-4 h-4 text-blue-400"></i>
                     Nova Categoria
                 </h3>
-                <button onclick="fecharModalCategoria()" class="text-slate-400 hover:text-white">
+                <button data-close-modal="categoriaModal" class="text-slate-400 hover:text-white">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -258,22 +276,22 @@
                     <input type="text" id="novaCategoriaInput" placeholder="Ex: Monitores" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
                 </div>
                 <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" onclick="fecharModalCategoria()" class="px-3 py-2 bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg">Cancelar</button>
-                    <button type="button" onclick="salvarNovaCategoria()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg">Adicionar</button>
+                    <button type="button" data-close-modal="categoriaModal" class="px-3 py-2 bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg">Cancelar</button>
+                    <button type="button" data-action="salvar-categoria" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg">Adicionar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal 3: Adicionar Novo Fornecedor (Rápido) -->
-    <div id="fornecedorModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div id="fornecedorModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200">
             <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
                 <h3 class="font-bold text-sm flex items-center gap-2">
                     <i data-lucide="truck" class="w-4 h-4 text-blue-400"></i>
                     Novo Fornecedor
                 </h3>
-                <button onclick="fecharModalFornecedor()" class="text-slate-400 hover:text-white">
+                <button data-close-modal="fornecedorModal" class="text-slate-400 hover:text-white">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -283,82 +301,13 @@
                     <input type="text" id="novoFornecedorInput" placeholder="Ex: Comércio Global Ltda" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
                 </div>
                 <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" onclick="fecharModalFornecedor()" class="px-3 py-2 bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg">Cancelar</button>
-                    <button type="button" onclick="salvarNovoFornecedor()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg">Adicionar</button>
+                    <button type="button" data-close-modal="fornecedorModal" class="px-3 py-2 bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg">Cancelar</button>
+                    <button type="button" data-action="salvar-fornecedor" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg">Adicionar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts de Controle -->
-    <script>
-        lucide.createIcons();
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        // Funções específicas para detecção de nova categoria/fornecedor via select
-        function verificarOpcaoCategoria(select) {
-            if (select.value === 'nova') {
-                document.getElementById('categoriaModal').classList.remove('hidden');
-            }
-        }
-
-        function fecharModalCategoria() {
-            document.getElementById('categoriaModal').classList.add('hidden');
-            document.getElementById('selectCategoria').value = "";
-        }
-
-        function salvarNovaCategoria() {
-            const nome = document.getElementById('novaCategoriaInput').value.trim();
-            if (nome) {
-                const select = document.getElementById('selectCategoria');
-                const opt = document.createElement('option');
-                opt.value = nome;
-                opt.textContent = nome;
-                select.insertBefore(opt, select.lastElementChild);
-                select.value = nome;
-                document.getElementById('novaCategoriaInput').value = '';
-                fecharModalCategoria();
-            }
-        }
-
-        function verificarOpcaoFornecedor(select) {
-            if (select.value === 'nova') {
-                document.getElementById('fornecedorModal').classList.remove('hidden');
-            }
-        }
-
-        function fecharModalFornecedor() {
-            document.getElementById('fornecedorModal').classList.add('hidden');
-            document.getElementById('selectFornecedor').value = "";
-        }
-
-        function salvarNovoFornecedor() {
-            const nome = document.getElementById('novoFornecedorInput').value.trim();
-            if (nome) {
-                const select = document.getElementById('selectFornecedor');
-                const opt = document.createElement('option');
-                opt.value = nome;
-                opt.textContent = nome;
-                select.insertBefore(opt, select.lastElementChild);
-                select.value = nome;
-                document.getElementById('novoFornecedorInput').value = '';
-                fecharModalFornecedor();
-            }
-        }
-    </script>
+   <script src="js/script.js"></script>
 </body>
 </html>
