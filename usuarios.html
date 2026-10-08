@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full bg-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque - Gerenciamento de Usuários</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="h-full flex text-slate-800 overflow-x-hidden">
+
+    <!-- Overlay para fechar o menu no mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs hidden lg:hidden transition-opacity"></div>
+
+    <!-- Sidebar / Menu Lateral Esquerdo -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-800 text-slate-300 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 lg:static">
+        <!-- Topo do Menu com Link no Título -->
+        <div class="h-16 flex items-center justify-between px-6 bg-slate-900 border-b border-slate-700">
+            <a href="index.html" class="flex items-center gap-3 group focus:outline-none">
+                <div class="p-2 bg-blue-600 rounded-lg text-white group-hover:bg-blue-500 transition-colors">
+                    <i data-lucide="boxes" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-white tracking-wide block text-sm group-hover:text-blue-400 transition-colors">Controle Estoque</span>
+                    <span class="text-[10px] text-slate-400">Entrada e Saída de Produtos</span>
+                </div>
+            </a>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white p-1">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Links de Navegação -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 space-y-6 text-sm">
+            <div>
+                <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Gerenciamento</p>
+                <nav class="space-y-1">
+                    <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4 text-slate-400"></i>
+                        <span>Página Inicial</span>
+                    </a>
+                    <a href="produtos.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="package" class="w-4 h-4 text-slate-400"></i>
+                        <span>Produtos</span>
+                    </a>
+                    <a href="categorias.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="tags" class="w-4 h-4 text-slate-400"></i>
+                        <span>Categorias</span>
+                    </a>
+                    <a href="fornecedores.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="truck" class="w-4 h-4 text-slate-400"></i>
+                        <span>Fornecedores</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div>
+                <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Movimentação</p>
+                <nav class="space-y-1">
+                    <a href="entradas.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="arrow-down-left" class="w-4 h-4 text-emerald-400"></i>
+                        <span>Entradas</span>
+                    </a>
+                    <a href="saidas.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-rose-400"></i>
+                        <span>Saídas</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div>
+                <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Administração</p>
+                <nav class="space-y-1">
+                    <a href="usuarios.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-700 text-white font-medium transition-colors">
+                        <i data-lucide="users" class="w-4 h-4 text-blue-400"></i>
+                        <span>Usuários</span>
+                    </a>
+                    <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors">
+                        <i data-lucide="activity" class="w-4 h-4 text-slate-400"></i>
+                        <span>Logs de Atividades</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="flex-1 flex flex-col min-w-0">
+        
+        <!-- Barra Superior (Header) -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 shadow-xs">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-600 hover:text-slate-900 p-1">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
+                    <span class="font-semibold text-slate-700 truncate">Controle de Estoque</span>
+                    <span class="hidden sm:inline">/</span>
+                    <span class="text-blue-600 font-medium truncate">Usuários</span>
+                </div>
+            </div>
+
+            <!-- Informações do Usuário Logado -->
+            <div class="flex items-center gap-3">
+                <div class="text-right hidden sm:block">
+                    <span class="text-xs text-slate-500 block">Você está logado como <strong class="text-slate-800">admin</strong></span>
+                    <span class="text-[11px] text-slate-400">IP: 192.168.56.1</span>
+                </div>
+                <div class="flex items-center justify-center w-9 h-9 bg-slate-200 rounded-full text-slate-700 font-bold border border-slate-300">
+                    <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Corpo da Página -->
+        <main class="flex-1 p-4 sm:p-6 space-y-6 overflow-y-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="users" class="w-6 h-6 text-slate-700"></i>
+                        <h1 class="text-xl sm:text-2xl font-bold text-slate-800">Gerenciamento de Usuários</h1>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Controle o acesso de operadores e administradores ao sistema.</p>
+                </div>
+                <button onclick="openModal()" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md transition-all text-sm cursor-pointer">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    <span>Cadastrar Novo Usuário</span>
+                </button>
+            </div>
+
+            <!-- Barra de Busca -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+                <div class="relative w-full sm:w-80">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" placeholder="Pesquisar por nome ou e-mail..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <!-- Tabela de Usuários -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-semibold uppercase tracking-wider">
+                                <th class="py-3.5 px-6">Nome / E-mail</th>
+                                <th class="py-3.5 px-6">Nível de Acesso</th>
+                                <th class="py-3.5 px-6">Status</th>
+                                <th class="py-3.5 px-6 text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-sm text-slate-700">
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="py-4 px-6">
+                                    <div class="font-semibold text-slate-900">Administrador Master</div>
+                                    <div class="text-xs text-slate-400">admin@estoque.com</div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="px-2.5 py-1 bg-purple-50 text-purple-700 rounded-md text-xs font-semibold">Administrador</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold">Ativo</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button title="Editar" class="p-1.5 bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-lg transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                        <button title="Excluir" class="p-1.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="py-4 px-6">
+                                    <div class="font-semibold text-slate-900">João Operador</div>
+                                    <div class="text-xs text-slate-400">joao@estoque.com</div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-semibold">Operador</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold">Ativo</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button title="Editar" class="p-1.5 bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-lg transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                        <button title="Excluir" class="p-1.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Cadastro de Usuário -->
+    <div id="usuarioModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
+            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i data-lucide="user-plus" class="w-5 h-5 text-blue-400"></i>
+                    Cadastrar Novo Usuário
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form class="p-6 space-y-4">
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Nome Completo</label>
+                    <input type="text" required placeholder="Ex: Maria da Silva" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">E-mail de Acesso</label>
+                    <input type="email" required placeholder="maria@estoque.com" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Senha</label>
+                        <input type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Nível de Acesso</label>
+                        <select class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-blue-500">
+                            <option>Operador</option>
+                            <option>Administrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition-colors cursor-pointer">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl shadow-md transition-colors cursor-pointer">
+                        Salvar Usuário
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts de Controle -->
+    <script>
+        lucide.createIcons();
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function openModal() {
+            document.getElementById('usuarioModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('usuarioModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
